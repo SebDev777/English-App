@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './styles/LevelLayout.css';
 
 import { APP_STATES, AppState } from "../App.tsx";
-import { AppOptions } from '../types/AppTypes';
-import {levels, getPlayerLevel} from "../lib/levels.index.ts"
+import { AppOptions, LevelOptions } from '../types/AppTypes';
+import {levels, getPlayerLevel, LevelsDataHandle} from "../lib/levels.index.ts"
 
 import Congratulations from './components/Congratulations.tsx';
 import LevelLayoutContainer from './components/LevelLayoutContainer.tsx';
@@ -23,22 +23,28 @@ type LevelLayout = {
 export default function LevelLayout({level, appOptions} : LevelLayout) {
     const { setAppState } = appOptions
     const [ selected, setSelected ] = useState<string[]>([])
-    const [ levelOptions, setLevelOptions ] = useState<string[] | []>([])
-    const [ dialog, setDialog ] = useState("")
-    const [ totalSelected, setTotalSelected ] = useState<number>(0)
+    const [ levelOptions, setLevelOptions ] = useState<LevelOptions[]>([])
+    const [ dialog, setDialog ] = useState<string>("")
     const [ alertStatus, setAlertStatus ] = useState<string>("")
     const [ gameStatus, setGameStatus ] = useState<GameStatus>(GAME_STATUS.PLAYING)
     const [completed, setCompleted] = useState<boolean>(false)
 
     useEffect(() => {
-        const levelsData = localStorage.getItem("levelsData")
+        /* Auto Submit when everything is selected */
+        if (levelOptions.length <= 0) return
+        if (selected.length === levelOptions.length) {
+            handleSubmit()
+        }
+    }, [selected, levelOptions])
+
+    useEffect(() => {
+        const levelsData = LevelsDataHandle.get()
         if (!levelsData) return
-        let levelsDataParsed = JSON.parse(levelsData)
-        if (levelsDataParsed[level].completed) return
-        if (levelsDataParsed[level].startedAt) return
+        if (levelsData[level].completed) return
+        if (levelsData[level].startedAt) return
         /* Here we set the startedAt time */
-        levelsDataParsed[level].startedAt = new Date().getTime()
-        localStorage.setItem("levelsData", JSON.stringify(levelsDataParsed))
+        levelsData[level].startedAt = new Date().getTime()
+        LevelsDataHandle.set(levelsData)
     }, [])
 
     useEffect(() => {
@@ -46,21 +52,19 @@ export default function LevelLayout({level, appOptions} : LevelLayout) {
         if (playerLevel > level) {
             setCompleted(true)
         }
-        const levelOptions = levels[level].levelOptions
-        let newOptions : Array<Object> = []
+        const levelOptions : string[] = levels[level].levelOptions
+        let newOptions : Array<LevelOptions> = []
         for (let option in levelOptions) {
             newOptions.push({
                 text: levelOptions[option],
                 selected: false,
-                selectedAt: null
+                selectedAt: selected.length-1
             })
         }
 
-        setTotalSelected(0)
         setSelected([])
         setLevelOptions(newOptions)
         setDialog(levels[level].dialog)
-        console.log(newOptions)
     }, [])
 
     function goBack() {
@@ -69,7 +73,6 @@ export default function LevelLayout({level, appOptions} : LevelLayout) {
 
     function reset() {
         setSelected([])
-        setTotalSelected(0)
         setGameStatus(GAME_STATUS.PLAYING)
         setLevelOptions(levelOptions.map(option => {
             return {
@@ -81,59 +84,54 @@ export default function LevelLayout({level, appOptions} : LevelLayout) {
     }
 
     function handleOptionClick(index: number) {
-        let newOptions = levelOptions.map((option, i) => {
-            if (i === index && option.selected === false) {
-                setAlertStatus("")
-                setTotalSelected(totalSelected + 1)
-                setSelected([...selected, option.text])
-                return {
-                    text: option.text,
-                    selected: !option.selected,
-                    selectedAt: totalSelected
-                }
-            } else {
-                return option
-            }
-        })
+        setLevelOptions(levelOptions.map((option, i) => {
+            if (i !== index) return option
+            setAlertStatus("")
+            setSelected(option.selected === false
+                ? [...selected, option.text]
+                : selected.filter(item => item !== option.text)
+            )
 
-        setLevelOptions(newOptions)
-        console.log(newOptions)
+            return {
+                text: option.text,
+                selected: !option.selected,
+                selectedAt: selected.length
+            }
+        }))
     }
 
     function handleSubmit() {
         let allSelected = levelOptions.filter(option => option.selected === true)
-        if (allSelected.length === levelOptions.length) {
-            const Correct = levelOptions.filter(option => {
-                return option.selectedAt === levelOptions.indexOf(option)
-            })
+        if (allSelected.length !== levelOptions.length) {
+            return setAlertStatus("You must select all options")
+        }
 
-            const levelsData = localStorage.getItem("levelsData")
+        const Correct = levelOptions.filter(option => {
+            return option.selectedAt === levelOptions.indexOf(option)
+        })
 
-            switch (Correct.length) {
-                case levelOptions.length:
-                    setGameStatus(GAME_STATUS.SUCCESS);
-                
-                    if (levelsData) {
-                        let levelsDataParsed = JSON.parse(levelsData)
-                        levelsDataParsed[level].completed = true
-                        const completionTime = String((new Date().getTime() - levelsDataParsed[level].startedAt) / 1000) + "s"
-                        levelsDataParsed[level].completionTime = completionTime
-                        localStorage.setItem("levelsData", JSON.stringify(levelsDataParsed))
-                    }
-                    break
-                default:
-                    setAlertStatus("You got some answers wrong, try again!")
-                    reset()
+        console.log(Correct)
+        const levelsData = LevelsDataHandle.get()
+        switch (Correct.length) {
+            case levelOptions.length:
+                setGameStatus(GAME_STATUS.SUCCESS);
+            
+                if (levelsData) {
+                    const completionTime = String((new Date().getTime() - levelsData[level].startedAt) / 1000) + "s"
+                    levelsData[level].completed = true
+                    levelsData[level].completionTime = completionTime
+                    LevelsDataHandle.set(levelsData)
+                }
+                break
+            default:
+                setAlertStatus("You got some answers wrong, try again!")
+                reset()
 
-                    if (levelsData) {
-                        let levelsDataParsed = JSON.parse(levelsData)
-                        levelsDataParsed[level].attemps++
-                        localStorage.setItem("levelsData", JSON.stringify(levelsDataParsed))                        
-                    }
-                    break
-            }
-        } else {
-            setAlertStatus("You must select all options")
+                if (levelsData) {
+                    levelsData[level].attempts++
+                    LevelsDataHandle.set(levelsData)
+                }
+                break
         }
     }
 
@@ -149,8 +147,8 @@ export default function LevelLayout({level, appOptions} : LevelLayout) {
                     <LevelLayoutContainer 
                         levelOptions={levelOptions} 
                         dialog={dialog}
-                        selected={selected}
-                        alertStatus={alertStatus} 
+                        selected={selected} 
+                        alertStatus={alertStatus}
                         handlers={{handleOptionClick, handleSubmit}}
                     />
                 ) : (gameStatus === GAME_STATUS.SUCCESS || completed) && <Congratulations level={level}/>

@@ -1,9 +1,25 @@
-import React, { useState, useEffect, useRef} from "react"
+import React, { useEffect } from "react"
 
-export default function LevelLayoutContainer({levelOptions, dialog, alertStatus, handlers, selected}) {
+import { LevelOptions } from "../../types/AppTypes"
+
+interface Handlers {
+    handleOptionClick: (index: number) => void,
+    handleSubmit: () => void
+}
+
+interface ComponentProps {
+    levelOptions: Array<LevelOptions>,
+    dialog: string,
+    alertStatus: string,
+    handlers: Handlers,
+    selected: string[]
+}
+
+export default function LevelLayoutContainer({levelOptions, dialog, alertStatus, handlers, selected} : ComponentProps) {
     
     const { handleOptionClick, handleSubmit } = handlers
     console.log(selected)
+    console.log(levelOptions)
 
     useEffect(() => {
         /* Select all the blank class elements */
@@ -11,7 +27,7 @@ export default function LevelLayoutContainer({levelOptions, dialog, alertStatus,
         elements.forEach((element, index) => {
             const selectedItem = selected[index]
             const htmlElement = element as HTMLElement;
-            htmlElement.innerText = selectedItem ? selectedItem + " " : "______"
+            htmlElement.innerText = selectedItem ? selectedItem + " " : "______ "
             htmlElement.classList.add("added")
         });
     }, [selected])
@@ -46,9 +62,7 @@ export default function LevelLayoutContainer({levelOptions, dialog, alertStatus,
                                 className={`option ${option.selected ? "selected" : ""}`}
                                 onClick={() => handleOptionClick(index)}
                             >
-                                <span>{
-                                    `${option.text} ${option.selected ? `(${option.selectedAt + 1})` : ""}`
-                                }</span>
+                                <span>{option.text}</span>
                             </div>
                         )
                     })

@@ -1,3 +1,5 @@
+import { LevelsDataType } from "../types/AppTypes"
+
 export const levels = [
     {
         levelOptions: [
@@ -34,11 +36,22 @@ export const levels = [
     }
 ]
 
+export const LevelsDataHandle = {
+    get: function() {
+        const levelsData = localStorage.getItem("levelsData")
+        return levelsData && JSON.parse(levelsData)
+    },
+
+    set: function(newLevelsData : LevelsDataType) {
+        localStorage.setItem("levelsData", JSON.stringify(newLevelsData))
+    }
+}
+
 export const getPlayerLevel = () : number => {
-    const levelsData = localStorage.getItem("levelsData")
+    const levelsData = LevelsDataHandle.get()
     if (!levelsData) return 0
     let completed = 0
-    JSON.parse(levelsData).forEach((level: any) => {
+    levelsData.forEach((level: any) => {
         if (level.completed) completed++
     })
     return completed

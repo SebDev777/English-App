@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react"
-import {APP_STATES} from "../App.tsx"
 
 import { getPlayerLevel } from "../lib/levels.index.ts"
 
+import { LevelType } from "../types/AppTypes.tsx"
+
 interface ComponentProps {
-  levels: any[]
+  levels: LevelType[],
   handleLevelSelection: (level: number) => void;
 }
 
@@ -17,22 +18,20 @@ export default function LevelSelection({levels, handleLevelSelection} : Componen
 
     useEffect(() => {
         const playerLevel = getPlayerLevel()
-        console.log(playerLevel)
         setPlayerLevel(playerLevel)
+        console.log("rendered")
     }, [])
 
     return (
         levels.map((item, index) => {
-          console.log(playerLevel, index, playerLevel > index)
             const {difficulty, title} = item
             const difficulty_className = `${difficulty}-lvl`
+            
             const current_className = index === playerLevel ? "current" : ""
 
             const completed_className = current_className === "current" ? "" : playerLevel > index ? "completed" : "not-completed"
 
             const className = `${difficulty_className} ${completed_className} ${current_className}`
-
-            console.log(className)
 
             return (
               <article key={index}
