@@ -1,0 +1,30 @@
+.congratulations {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    animation: appear 1s linear;
+
+    & .robot-logo {
+        width: 100px;
+        height: auto;
+    }
+
+    & .stats {
+        width: 80%;
+        height: fit-content;
+        background-color: var(--background-color2);
+        border-radius: 20px;
+        padding: 30px;
+
+        & p {
+            color: var(--text-color);
+            font-size: 1.2rem;
+            margin: 0;
+            background-color: var(--background-color3);
+            margin-top: 10px;
+            border-radius: 10px;
+            padding: 10px;
+        }
+    }
+}

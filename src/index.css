@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sora:wght@100..800&display=swap');
+
+body {
+  margin: 0;
+  font-family: "Poppins";
+  background-color: #010101;
+  color: var(--text-color);
+  --text-color: #fafafa;
+  --black-text-color: #161B20;
+  --subtext-color: #9094A1;
+  --white-color: #F3F7FF;
+  --easy-level-color: #01BCDD;
+  --medium-level-color: #FEA803;
+  --hard-level-color: #7C03CC;
+  --background-color2: #121011;
+  --background-color3: #1D191A;
+  /* images */
+  --pattern-img1: url("https://www.pngmart.com/files/13/Pattern-PNG-Transparent-Image.png");
+  --easy-lvl-background-img: url("https://www.nicepng.com/png/full/51-510804_colorful-backgrounds-png-colorful-background-design-png.png");
+}
+
+h1 {
+  font-weight: 600;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+
+  & .header {
+    margin-top: 10px;
+    background-color: white;
+    background-size: cover;
+    border-radius: 10px;
+    width: 90%;
+    text-align: center;
+    padding: 5px;
+    & h1 {
+      color: var(--black-text-color)
+    }
+  }
+
+  & h1 {
+    margin: 0 auto;
+  }
+}
+
+main {
+
+  & section {
+    height: 90vh;
+    margin: 5vh 10vw;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+
+    & article {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: end;
+      background-size: cover;
+      border-radius: 20px;
+      gap: 30px;
+      padding-top: 10vh;
+      padding-bottom: 10px;
+      box-shadow: 0px 30px 100px 0px rgba(17, 23, 41, 0.2);
+      transition: transform 0.2s;
+
+      & img {
+        width: 100%;
+        height: auto;
+      }
+
+      & h2 {
+        color: var(--text-color);
+        margin-bottom: 0;
+      }
+
+      & .lvl-index {
+        border-radius: 10px;
+        font-weight: 500;
+      }
+
+      & span {
+        /* Smooth opacity transition */
+        transition: opacity 0.2s;
+        opacity: 0%;
+        width: 100px;
+        height: 30px;
+        background-color: white;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+    }
+
+    .not-completed {
+      filter: grayscale(100%) blur(2px);
+    }
+
+    & article:hover {
+      transform: translateX(20px) scale(1.05);
+      opacity: 100%;
+    }
+
+    & article:hover span {
+      opacity: 100%;
+    }
+
+    .completed {
+      border: 5px solid  rgb(0, 255, 128);
+    }
+
+    .current {
+      border: 5px solid white
+    }
+
+    .easy-lvl {
+      /* add a linear gradient with the --easy-level-color */
+      background-color: var(--easy-level-color);
+      background-image: var(--easy-lvl-background-img);
+      & .lvl-index {
+        background-color: var(--easy-level-color);
+      }
+      & span {
+        & h3 {
+          color: var(--easy-level-color);
+        }
+      }
+    }
+
+    .medium-lvl {
+      background-color: var(--medium-level-color);
+      background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+      & .lvl-index {
+        background-color: var(--medium-level-color);
+      }
+      & span {
+        & h3 {
+          color: var(--medium-level-color);
+        }
+      }
+    }
+
+    .hard-lvl {
+      background: linear-gradient(120deg, var(--hard-level-color) 0%, #e277c4 100%);
+      & .lvl-index {
+        background-color: var(--hard-level-color);
+      }
+      & span {
+        & h3 {
+          color: var(--hard-level-color);
+        }
+      }
+    }
+  
+  }
+
+}
+
+@keyframes appear {
+    0% {
+      opacity: 0%;
+      margin-top: -20px;
+    }
+
+    100% {
+      opacity: 100%;
+      margin-top: 0;
+    }
+}
