@@ -81,7 +81,16 @@
         & h3 {
             color: #CACACA;
             font-weight: 400;
-            margin: 20px
+            margin: 20px;
+        }
+
+        & .blank {
+            color: #FFD700;
+            font-style: italic;
+        }
+
+        & .added {
+            animation: color-animation 5s linear infinite;
         }
 
         & .robot-logo {
@@ -90,6 +99,20 @@
             margin-top: 10px;
         }
 
+    }
+}
+
+@keyframes color-animation {
+    0% {
+        color: #ff8800
+    }
+
+    50% {
+        color: #FFD700
+    }
+
+    100% {
+        color: #ff8800
     }
 }
 

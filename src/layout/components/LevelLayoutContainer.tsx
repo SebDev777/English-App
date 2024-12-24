@@ -1,13 +1,41 @@
-import React, { useState, useEffect} from "react"
+import React, { useState, useEffect, useRef} from "react"
 
-export default function LevelLayoutContainer({levelOptions, dialog, alertStatus, handlers}) {
-
+export default function LevelLayoutContainer({levelOptions, dialog, alertStatus, handlers, selected}) {
+    
     const { handleOptionClick, handleSubmit } = handlers
+    console.log(selected)
+
+    useEffect(() => {
+        /* Select all the blank class elements */
+        const elements = document.querySelectorAll(".blank")
+        elements.forEach((element, index) => {
+            const selectedItem = selected[index]
+            const htmlElement = element as HTMLElement;
+            htmlElement.innerText = selectedItem ? selectedItem + " " : "______"
+            htmlElement.classList.add("added")
+        });
+    }, [selected])
+
     return (
         <div className="container">
             <div className="dialog">
                 <img className="robot-logo" src="https://icones.pro/wp-content/uploads/2022/10/icone-robot-bleu.png" />
-                <h3>{dialog}</h3>
+                <div className="dialog-container">
+                {<h3>
+                    {
+                        dialog.split(" ").map((word, index) => {
+                            /* If the word is a blank space, return a span with the word */
+                            const indexOfBlank = word.indexOf("______")
+                            if (indexOfBlank > -1) {
+                                return <span key={index} className="blank">{word + " "}</span>
+                            } else {
+                                return word + " "
+                            }
+                        })
+                    }
+                </h3>
+                }
+                </div>
             </div>
             <div className="answers">
                 {

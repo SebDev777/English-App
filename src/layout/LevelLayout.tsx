@@ -22,8 +22,9 @@ type LevelLayout = {
 
 export default function LevelLayout({level, appOptions} : LevelLayout) {
     const { setAppState } = appOptions
+    const [ selected, setSelected ] = useState<string[]>([])
     const [ levelOptions, setLevelOptions ] = useState<string[] | []>([])
-    const [ dialog, setDialog ] = useState<string>("")
+    const [ dialog, setDialog ] = useState("")
     const [ totalSelected, setTotalSelected ] = useState<number>(0)
     const [ alertStatus, setAlertStatus ] = useState<string>("")
     const [ gameStatus, setGameStatus ] = useState<GameStatus>(GAME_STATUS.PLAYING)
@@ -56,6 +57,7 @@ export default function LevelLayout({level, appOptions} : LevelLayout) {
         }
 
         setTotalSelected(0)
+        setSelected([])
         setLevelOptions(newOptions)
         setDialog(levels[level].dialog)
         console.log(newOptions)
@@ -66,6 +68,7 @@ export default function LevelLayout({level, appOptions} : LevelLayout) {
     }
 
     function reset() {
+        setSelected([])
         setTotalSelected(0)
         setGameStatus(GAME_STATUS.PLAYING)
         setLevelOptions(levelOptions.map(option => {
@@ -82,6 +85,7 @@ export default function LevelLayout({level, appOptions} : LevelLayout) {
             if (i === index && option.selected === false) {
                 setAlertStatus("")
                 setTotalSelected(totalSelected + 1)
+                setSelected([...selected, option.text])
                 return {
                     text: option.text,
                     selected: !option.selected,
@@ -145,6 +149,7 @@ export default function LevelLayout({level, appOptions} : LevelLayout) {
                     <LevelLayoutContainer 
                         levelOptions={levelOptions} 
                         dialog={dialog}
+                        selected={selected}
                         alertStatus={alertStatus} 
                         handlers={{handleOptionClick, handleSubmit}}
                     />
