@@ -44,8 +44,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-      const InitialData = LevelsDataHandle.get()
-      if (InitialData) return
+      // const InitialData = LevelsDataHandle.get()
+      // if (InitialData) return
       const levelsData = levels.map(() => {
         return {
           completed: false,
