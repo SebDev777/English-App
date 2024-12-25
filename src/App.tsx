@@ -36,16 +36,13 @@ function App() {
       return () => clearTimeout(timer);
     };
 
-    window.addEventListener('load', handleLoad);
-
-    return () => {
-      window.removeEventListener('load', handleLoad);
-    };
+    handleLoad()
   }, []);
 
   useEffect(() => {
       // const InitialData = LevelsDataHandle.get()
       // if (InitialData) return
+      /* Need to reset the data because if we makes change of localstorage, the new versions may be affected */
       const levelsData = levels.map(() => {
         return {
           completed: false,
