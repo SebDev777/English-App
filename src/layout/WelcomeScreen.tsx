@@ -26,7 +26,7 @@ export default function WelcomeScreen({status} : WelcomeScreenProps) {
                     </div>
                 ) : <h1>Loaded and ready to start!</h1>
             }
-            <span className="author">Made by SebDev, v0.5</span>
+            <span className="author">Made by SebDev, v0.6</span>
         </div>
     );
 }

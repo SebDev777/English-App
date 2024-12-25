@@ -68,7 +68,7 @@ export default function Congratulations({level, resetLevel}) {
             }
 
             <div className="level-reset">
-                <button onClick={resetLevel}>Reset level</button>
+                <button onClick={resetLevel}>Retry Level</button>
             </div>
         </div>
     )

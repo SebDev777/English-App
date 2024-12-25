@@ -50,13 +50,6 @@ export default function LevelLayout({level, appOptions} : LevelLayout) {
     }, [])
 
     function resetLevel() {
-        const levelsData = LevelsDataHandle.get()
-        if (!levelsData) return
-        levelsData[level].startedAt = null
-        levelsData[level].completed = false
-        levelsData[level].completionTime = null
-        levelsData[level].attempts = 1
-        LevelsDataHandle.set(levelsData)
         setCompleted(false)
         reset()
     }

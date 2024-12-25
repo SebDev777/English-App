@@ -37,9 +37,9 @@
 
     & .level-reset button {
         background-color: transparent;
-        margin-top: 5vh;
+        margin: 5vh auto;
         color: white;
-        height: 5vh;
+        height: fit-content;
         width: 90vw;
         font-weight: bold;
         font-family: "Poppins";
