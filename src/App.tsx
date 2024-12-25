@@ -23,28 +23,16 @@ const WELCOME_STATUS = {
 function App() {
   const [ appState, setAppState ] = useState<AppState>(APP_STATES.LEVEL_SELECTION)
   const [ levelSelected, setLevelSelected ] = useState<number | null>(null)
-  const [showWelcomeScreen, setShowWelcomeScreen] = useState(false);
+  const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
   const [ welcomeStatus, setWelcomeStatus ] = useState(WELCOME_STATUS.WAITING)
 
   useEffect(() => {
-    const loaded = localStorage.getItem("loaded")
-    if (loaded) {
-      setWelcomeStatus(WELCOME_STATUS.LOADED)
-      return
-    }
-
     setShowWelcomeScreen(true)
     const handleLoad = () => {
       const timer = setTimeout(() => {
         setWelcomeStatus(WELCOME_STATUS.LOADED)
-        const t2 = setTimeout(() => {
-          setShowWelcomeScreen(false);
-          localStorage.setItem("loaded", "true")
-        }, 2000)
-
-        return () => clearTimeout(t2)
-      }, 5000); // Show welcome screen for 10 seconds
-
+        setShowWelcomeScreen(false)
+      }, 2000);
       return () => clearTimeout(timer);
     };
 
@@ -109,6 +97,9 @@ function App() {
                 }
               </section>
           </main>
+          <footer>
+            
+          </footer>
         </>
       )
     }

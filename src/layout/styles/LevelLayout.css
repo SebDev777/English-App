@@ -152,6 +152,8 @@
         color: var(--background-color2);
         font-weight: bold;
         border: 2px solid white;
+        /* add glow effect */
+        box-shadow: 0 0 50px rgb(255, 215, 0, 0.5);
     }
 }
 

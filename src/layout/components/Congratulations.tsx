@@ -3,9 +3,17 @@ import "./styles/Congratulations.css"
 
 import Confetti from 'react-confetti-boom';
 
-export default function Congratulations({level}) {
+const formatSecondsToMinutes = (seconds: number) => {
+    console.log(seconds)
+    const minutes = Math.floor(seconds / 60)
+    const remainingSeconds = Math.floor(seconds % 60)
+
+    return `${minutes}m ${remainingSeconds}s`
+}
+
+export default function Congratulations({level, resetLevel}) {
     const [stats, setStats] = useState({
-        time: "0s",
+        time: 0,
         attempts: 0
     })
 
@@ -22,34 +30,46 @@ export default function Congratulations({level}) {
         let levelsDataParsed = JSON.parse(levelsData)
         const levelData = levelsDataParsed[level]
         const completionTime = levelData.completionTime
-        const attemps = levelData.attemps
+        const attempts = levelData.attempts
 
         setStats({
             time: completionTime, 
-            attemps: attemps
+            attempts: attempts
         })
     }, [])
 
     return ( 
         <div className="congratulations" style={{animation: anim}}>
             <Confetti 
-                mode="fall"
+                mode="boom"
                 shapeSize={25}
-                fadeOutHeight={1}
+                y={0.35}
+                spreadDeg={180}
+                particleCount={50}
                 colors={["#FFD700", "#fafafafa", "#67e9ac"]}
             />
             <img className="robot-logo" src="https://icones.pro/wp-content/uploads/2022/10/icone-robot-bleu.png" />
-            <h1>Congratulations!</h1>
-            <h2>You have completed the level</h2>
+            <div className="congrats-txt">
+                {"Congratulations!".split('').map((char, index) => (
+                    <span style={{
+                        animationDelay: `${index/50}s`
+                    }} key={index}>{char}</span>
+                ))}
+            </div>
+            <h2>You have completed the level {level}!!</h2>
             {
                 stats && (
                     <div className="stats">
                         <h3>Stats:</h3>
-                        <p>Time: {stats.time}</p>
-                        <p>Attempts: {stats.attemps}</p>
+                        <p>Time: {formatSecondsToMinutes(stats.time)}</p>
+                        <p>Attempts: {stats.attempts}</p>
                     </div>
                 )
             }
+
+            <div className="level-reset">
+                <button onClick={resetLevel}>Reset level</button>
+            </div>
         </div>
     )
 }

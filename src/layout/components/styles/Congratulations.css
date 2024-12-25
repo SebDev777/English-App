@@ -5,6 +5,13 @@
     text-align: center;
     animation: appear 1s linear;
 
+    & .congrats-txt span{
+        color: #FFD700;
+        font-size: 2rem;
+        display: inline-block;
+        animation: bounce 1s infinite;
+    }
+
     & .robot-logo {
         width: 100px;
         height: auto;
@@ -26,5 +33,23 @@
             border-radius: 10px;
             padding: 10px;
         }
+    }
+
+    & .level-reset button {
+        background-color: transparent;
+        margin-top: 5vh;
+        color: white;
+        height: 5vh;
+        width: 90vw;
+        font-weight: bold;
+        font-family: "Poppins";
+        font-size: x-large;
+        border: 2px solid #FFD700;
+        border-radius: 10px;
+        transition: 0.5s;
+    }
+
+    & .level-reset button:hover {
+        color: #FFD700
     }
 }

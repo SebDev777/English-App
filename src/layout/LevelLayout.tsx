@@ -3,6 +3,7 @@ import './styles/LevelLayout.css';
 
 import { APP_STATES, AppState } from "../App.tsx";
 import { AppOptions, LevelOptions } from '../types/AppTypes';
+import { shuffleArray } from '../lib/utils.ts';
 import {levels, getPlayerLevel, LevelsDataHandle} from "../lib/levels.index.ts"
 
 import Congratulations from './components/Congratulations.tsx';
@@ -24,6 +25,7 @@ export default function LevelLayout({level, appOptions} : LevelLayout) {
     const { setAppState } = appOptions
     const [ selected, setSelected ] = useState<string[]>([])
     const [ levelOptions, setLevelOptions ] = useState<LevelOptions[]>([])
+    const [ correctLevelOptionsOrder, setCorrectLevelOptionsOrder ] = useState<string[]>([])
     const [ dialog, setDialog ] = useState<string>("")
     const [ alertStatus, setAlertStatus ] = useState<string>("")
     const [ gameStatus, setGameStatus ] = useState<GameStatus>(GAME_STATUS.PLAYING)
@@ -47,12 +49,25 @@ export default function LevelLayout({level, appOptions} : LevelLayout) {
         LevelsDataHandle.set(levelsData)
     }, [])
 
+    function resetLevel() {
+        const levelsData = LevelsDataHandle.get()
+        if (!levelsData) return
+        levelsData[level].startedAt = null
+        levelsData[level].completed = false
+        levelsData[level].completionTime = null
+        levelsData[level].attempts = 1
+        LevelsDataHandle.set(levelsData)
+        setCompleted(false)
+        reset()
+    }
+
     useEffect(() => {
         const playerLevel = getPlayerLevel()
         if (playerLevel > level) {
             setCompleted(true)
         }
         const levelOptions : string[] = levels[level].levelOptions
+        setCorrectLevelOptionsOrder(levelOptions)
         let newOptions : Array<LevelOptions> = []
         for (let option in levelOptions) {
             newOptions.push({
@@ -63,7 +78,7 @@ export default function LevelLayout({level, appOptions} : LevelLayout) {
         }
 
         setSelected([])
-        setLevelOptions(newOptions)
+        setLevelOptions(shuffleArray(newOptions))
         setDialog(levels[level].dialog)
     }, [])
 
@@ -106,8 +121,10 @@ export default function LevelLayout({level, appOptions} : LevelLayout) {
             return setAlertStatus("You must select all options")
         }
 
+        console.log(correctLevelOptionsOrder)
         const Correct = levelOptions.filter(option => {
-            return option.selectedAt === levelOptions.indexOf(option)
+            const correctLevelOptionIndex = correctLevelOptionsOrder.indexOf(option.text)
+            return correctLevelOptionIndex === option.selectedAt
         })
 
         console.log(Correct)
@@ -117,7 +134,7 @@ export default function LevelLayout({level, appOptions} : LevelLayout) {
                 setGameStatus(GAME_STATUS.SUCCESS);
             
                 if (levelsData) {
-                    const completionTime = String((new Date().getTime() - levelsData[level].startedAt) / 1000) + "s"
+                    const completionTime = String((new Date().getTime() - levelsData[level].startedAt) / 1000)
                     levelsData[level].completed = true
                     levelsData[level].completionTime = completionTime
                     LevelsDataHandle.set(levelsData)
@@ -151,7 +168,7 @@ export default function LevelLayout({level, appOptions} : LevelLayout) {
                         alertStatus={alertStatus}
                         handlers={{handleOptionClick, handleSubmit}}
                     />
-                ) : (gameStatus === GAME_STATUS.SUCCESS || completed) && <Congratulations level={level}/>
+                ) : (gameStatus === GAME_STATUS.SUCCESS || completed) && <Congratulations level={level} resetLevel={resetLevel}/>
             }
         </>
     )
