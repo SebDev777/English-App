@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './styles/LevelLayout.css';
 
-import { APP_STATES, AppState } from "../App.tsx";
-import { AppOptions, LevelOptions } from '../types/AppTypes';
-import { shuffleArray } from '../lib/utils.ts';
-import {levels, getPlayerLevel, LevelsDataHandle} from "../lib/levels.index.ts"
+import { APP_STATES, AppState } from "../../App.tsx";
+import { AppOptions, LevelOptions } from '../../types/AppTypes.tsx';
+import { shuffleArray } from '../../lib/utils.ts';
+import {levels, getPlayerLevel, LevelsDataHandle} from "../../lib/levels.index.ts"
 
-import Congratulations from './components/Congratulations.tsx';
-import LevelLayoutContainer from './components/LevelLayoutContainer.tsx';
+import Congratulations from './Congratulations.tsx';
+import LevelLayoutContainer from './LevelLayoutContainer.tsx';
 
 const GAME_STATUS = {
     SUCCESS: "SUCCESS",
@@ -49,11 +49,6 @@ export default function LevelLayout({level, appOptions} : LevelLayout) {
         LevelsDataHandle.set(levelsData)
     }, [])
 
-    function resetLevel() {
-        setCompleted(false)
-        reset()
-    }
-
     useEffect(() => {
         const playerLevel = getPlayerLevel()
         if (playerLevel > level) {
@@ -77,6 +72,17 @@ export default function LevelLayout({level, appOptions} : LevelLayout) {
 
     function goBack() {
         setAppState(APP_STATES.LEVEL_SELECTION)
+    }
+
+    function resetLevelHandle() {
+        const levelsData = LevelsDataHandle.get()
+        if (levelsData) {
+            levelsData[level].startedAt = new Date().getTime()
+            LevelsDataHandle.set(levelsData)
+        }
+        setCompleted(false)
+        setLevelOptions(shuffleArray(levelOptions))
+        reset()
     }
 
     function reset() {
@@ -149,7 +155,10 @@ export default function LevelLayout({level, appOptions} : LevelLayout) {
         <>
             <div className="level-header">
                 <button onClick={goBack}>{`<`}</button>
-                <h1>{`Level ${level}.`}</h1>
+                <div className="level-details">
+                    <h1>{`Level ${level}.`}</h1>
+                    <h1 className="lvl-title">{levels[level].title}</h1>
+                </div>
             </div>
 
             {
@@ -161,7 +170,10 @@ export default function LevelLayout({level, appOptions} : LevelLayout) {
                         alertStatus={alertStatus}
                         handlers={{handleOptionClick, handleSubmit}}
                     />
-                ) : (gameStatus === GAME_STATUS.SUCCESS || completed) && <Congratulations level={level} resetLevel={resetLevel}/>
+                ) : (gameStatus === GAME_STATUS.SUCCESS || completed) && <Congratulations 
+                    level={level} 
+                    resetLevelHandle={resetLevelHandle}
+                />
             }
         </>
     )

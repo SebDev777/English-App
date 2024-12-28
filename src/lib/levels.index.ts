@@ -33,6 +33,116 @@ export const levels = [
         ],
         title: "Guess the word",
         difficulty: "hard"
+    },
+    {
+        dialog: "The Mythical creature that is half lion and half eagle is called: ______. Something that is very small is called: ______. A person who is learning a job from a skilled employer is called: ______.",
+        levelOptions: [
+            "griffin",
+            "tiny",
+            "apprentice"
+        ],
+        title: "Guess the word",
+        difficulty: "hard"
+    },
+    {
+        dialog: "The Mythical creature that is half lion and half eagle is called: ______. Something that is very small is called: ______. A person who is learning a job from a skilled employer is called: ______.",
+        levelOptions: [
+            "griffin",
+            "tiny",
+            "apprentice"
+        ],
+        title: "Guess the word",
+        difficulty: "hard"
+    },
+    {
+        dialog: "The Mythical creature that is half lion and half eagle is called: ______. Something that is very small is called: ______. A person who is learning a job from a skilled employer is called: ______.",
+        levelOptions: [
+            "griffin",
+            "tiny",
+            "apprentice"
+        ],
+        title: "Guess the word",
+        difficulty: "hard"
+    },
+    {
+        dialog: "The Mythical creature that is half lion and half eagle is called: ______. Something that is very small is called: ______. A person who is learning a job from a skilled employer is called: ______.",
+        levelOptions: [
+            "griffin",
+            "tiny",
+            "apprentice"
+        ],
+        title: "Guess the word",
+        difficulty: "hard"
+    },
+    {
+        dialog: "The Mythical creature that is half lion and half eagle is called: ______. Something that is very small is called: ______. A person who is learning a job from a skilled employer is called: ______.",
+        levelOptions: [
+            "griffin",
+            "tiny",
+            "apprentice"
+        ],
+        title: "Guess the word",
+        difficulty: "hard"
+    },
+    {
+        dialog: "The Mythical creature that is half lion and half eagle is called: ______. Something that is very small is called: ______. A person who is learning a job from a skilled employer is called: ______.",
+        levelOptions: [
+            "griffin",
+            "tiny",
+            "apprentice"
+        ],
+        title: "Guess the word",
+        difficulty: "hard"
+    },
+    {
+        dialog: "The Mythical creature that is half lion and half eagle is called: ______. Something that is very small is called: ______. A person who is learning a job from a skilled employer is called: ______.",
+        levelOptions: [
+            "griffin",
+            "tiny",
+            "apprentice"
+        ],
+        title: "Guess the word",
+        difficulty: "hard"
+    },
+    {
+        dialog: "The Mythical creature that is half lion and half eagle is called: ______. Something that is very small is called: ______. A person who is learning a job from a skilled employer is called: ______.",
+        levelOptions: [
+            "griffin",
+            "tiny",
+            "apprentice"
+        ],
+        title: "Guess the word",
+        difficulty: "hard"
+    },
+    {
+        dialog: "The Mythical creature that is half lion and half eagle is called: ______. Something that is very small is called: ______. A person who is learning a job from a skilled employer is called: ______.",
+        levelOptions: [
+            "griffin",
+            "tiny",
+            "apprentice"
+        ],
+        title: "Guess the word",
+        difficulty: "hard"
+    },
+    {
+        dialog: "The Mythical creature that is half lion and half eagle is called: ______. Something that is very small is called: ______. A person who is learning a job from a skilled employer is called: ______.",
+        levelOptions: [
+            "griffin",
+            "tiny",
+            "apprentice"
+        ],
+        title: "Guess the word",
+        difficulty: "hard"
+    },
+    {
+        dialog: "The Mythical creature that is half lion and half eagle is called: ______. Something that is very small is called: ______. A person who is learning a job from a skilled employer is called: ______.",
+        levelOptions: [
+            "griffin",
+            "tiny",
+            "apprentice"
+        ],
+        title: "Guess the word",
+        difficulty: "hard"
     }
 ]
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 
 import LevelSelection from "./layout/LevelSelection.tsx"
-import LevelLayout from "./layout/LevelLayout.tsx"
+import LevelLayout from "./layout/components/LevelLayout.tsx"
 import WelcomeScreen from "./layout/WelcomeScreen.tsx"
 import {getPlayerLevel, levels, LevelsDataHandle} from "./lib/levels.index.ts"
 
@@ -25,7 +25,7 @@ function App() {
   const [ levelSelected, setLevelSelected ] = useState<number | null>(null)
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
   const [ welcomeStatus, setWelcomeStatus ] = useState(WELCOME_STATUS.WAITING)
-
+  
   useEffect(() => {
     setShowWelcomeScreen(true)
     const handleLoad = () => {

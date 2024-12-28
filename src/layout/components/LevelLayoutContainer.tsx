@@ -1,4 +1,5 @@
 import React, { useEffect } from "react"
+import "./styles/LevelLayoutContainer.css"
 
 import { LevelOptions } from "../../types/AppTypes"
 

@@ -7,11 +7,12 @@ const formatSecondsToMinutes = (seconds: number) => {
     console.log(seconds)
     const minutes = Math.floor(seconds / 60)
     const remainingSeconds = Math.floor(seconds % 60)
+    const remainingMiliseconds = Math.floor((seconds % 60) * 1000)
 
-    return `${minutes}m ${remainingSeconds}s`
+    return `${minutes}m ${remainingSeconds}s` + (remainingSeconds > 0 ? "" : ` ${remainingMiliseconds}ms`)
 }
 
-export default function Congratulations({level, resetLevel}) {
+export default function Congratulations({level, resetLevelHandle}) {
     const [stats, setStats] = useState({
         time: 0,
         attempts: 0
@@ -68,7 +69,7 @@ export default function Congratulations({level, resetLevel}) {
             }
 
             <div className="level-reset">
-                <button onClick={resetLevel}>Retry Level</button>
+                <button onClick={resetLevelHandle}>Retry Level</button>
             </div>
         </div>
     )

@@ -49,6 +49,10 @@
         transition: 0.5s;
     }
 
+    & .level-reset button:nth-child(1) {
+        margin-bottom: 1vh;
+    }
+
     & .level-reset button:hover {
         color: #FFD700
     }
